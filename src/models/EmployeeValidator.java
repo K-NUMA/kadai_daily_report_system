@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import utils.DBUtil;
 
 public class EmployeeValidator {
-    public static List<String> validae(Employee e,Boolean codeDuplicateCheckFlag,Boolean passwordCheckFlag){
+    public static List<String> validate(Employee e,Boolean codeDuplicateCheckFlag,Boolean passwordCheckFlag){
         List<String> errors = new ArrayList<String>();
 
         String code_error = validateCode(e.getCode(), codeDuplicateCheckFlag);
