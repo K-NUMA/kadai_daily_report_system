@@ -150,10 +150,14 @@ table#report_list .report_date{
 }
 
 table#report_list .report_title{
-    width: 37%;
+    width: 34%;
 }
 
 table#report_list .report_action{
+    width: 13%;
+}
+
+table#report_list .report_approval{
     width: 13%;
 }
 
@@ -163,4 +167,9 @@ pre{
 
 h3{
     font-size: larger;
+}
+
+#approval{
+    display : inline-block;
+    margin:20px;
 }
