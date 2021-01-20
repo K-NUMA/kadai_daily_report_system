@@ -40,11 +40,13 @@ public class ApprovalsCreateServlet extends HttpServlet {
 
             int report_id = Integer.parseInt(request.getParameter("report_id"));
             Report r = em.find(Report.class,report_id);
+            Employee e = (Employee)request.getSession().getAttribute("login_employee");
 
             Approval a = new Approval();
 
             a.setId(report_id);
-            a.setEmployee((Employee)request.getSession().getAttribute("login_employee"));
+            a.setEmployee(r.getEmployee());
+            a.setApproval_employee(e.getId());
             a.setReport_date(r.getReport_date());
             a.setReport_title(r.getTitle());
             a.setReport_content(r.getContent());

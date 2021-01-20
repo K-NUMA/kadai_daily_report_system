@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Approval;
+import models.Report;
 import utils.DBUtil;
 
 /**
@@ -34,9 +35,13 @@ public class ApprovalsShowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-        Integer report_id = Integer.parseInt(request.getParameter("id"));
+        int report_id = Integer.parseInt(request.getParameter("id"));
 
-       Approval ap = em.find(Approval.class,report_id);
+        Approval ap = em.find(Approval.class,report_id);
+        Report r = em.find(Report.class,report_id);
+
+        request.setAttribute("report",r);
+        request.setAttribute("approval",ap);
 
         em.close();
 

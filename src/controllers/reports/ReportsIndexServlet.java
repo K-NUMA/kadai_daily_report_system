@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Approval;
 import models.Report;
 import utils.DBUtil;
 
@@ -50,11 +51,18 @@ public class ReportsIndexServlet extends HttpServlet {
         long reports_count = (long)em.createNamedQuery("getReportsCount",Long.class)
                 .getSingleResult();
 
+        // 承認済みの日報のデータをテーブルから取得(index.jspで承認ステータスを表示するときに使用)
+        List<Approval> approvals = em.createNamedQuery("getAllApprovals",Approval.class)
+                .setFirstResult(15 * (page - 1))
+                .setMaxResults(15)
+                .getResultList();
+
         em.close();
 
         request.setAttribute("reports",reports);
         request.setAttribute("reports_count",reports_count);
         request.setAttribute("page",page);
+        request.setAttribute("approvals",approvals);
         if(request.getSession().getAttribute("flush") != null){
             request.setAttribute("flush",request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");

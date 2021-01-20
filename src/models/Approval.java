@@ -29,6 +29,17 @@ public class Approval {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    @Column(name = "approval_employee_id", nullable = false)
+    private Integer approval_employee;
+
+    public Integer getApproval_employee() {
+        return approval_employee;
+    }
+
+    public void setApproval_employee(Integer approval_employee) {
+        this.approval_employee = approval_employee;
+    }
+
     @Column(name = "report_date", nullable = false)
     private Date report_date;
 

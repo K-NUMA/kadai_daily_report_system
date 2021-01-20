@@ -35,7 +35,7 @@ public class ApprovalsNewServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
         request.setAttribute("_token", request.getSession().getId());
 
-        Integer report_id = Integer.parseInt(request.getParameter("id"));
+        int report_id = Integer.parseInt(request.getParameter("report_id"));
         Report r = em.find(Report.class,report_id);
 
         request.setAttribute("report", r);

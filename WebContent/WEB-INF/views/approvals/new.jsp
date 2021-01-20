@@ -7,6 +7,7 @@
             <c:when test="${report != null }">
                 <h2>日報 承認画面</h2>
 
+                <p>日報の詳細</p>
                 <table>
                     <tbody>
                         <tr>
@@ -40,7 +41,7 @@
                     <input type="hidden" name="_token" value="${_token}" />
                     <button type="submit">この日報を承認する</button>
                 </form>
-                <form method="GET" action="<c:url value='/reports/index"' />" id="approval">
+                <form method="GET" action="<c:url value='/reports/index' />" id="approval">
                     <button type="submit">この日報を差し戻す</button>
                 </form>
 

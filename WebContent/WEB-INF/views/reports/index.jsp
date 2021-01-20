@@ -24,8 +24,23 @@
                         <td class="report_date"><fmt:formatDate value='${report.report_date}' pattern='yyyy-MM-dd'/></td>
                         <td class="report_title">${report.title}</td>
                         <td class="report_action"><a href="<c:url value ='/reports/show?id=${report.id}' />">詳細を見る</a></td>
-                        <td class="report_approval"><a href="<c:url value ='/approvals/show?id=${report.id}' />">承認状況を見る</a>&nbsp;
-                        <p><a href="<c:url value='/approvals/new?id=${report.id}' />">日報の承認</a></p></td>
+
+                        <!-- 表示する日報が承認済みかどうかチェックを行い
+                             承認済みなら app_reportを1に設定 -->
+                        <c:set var="app_true" value="0" />
+                        <c:forEach var="app_report" items="${approvals}" varStatus="count">
+                                <c:if test="${report.id == app_report.id}" >
+                                    <c:set var="app_true" value="1" />
+                                </c:if>
+                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${app_true == 1}">
+                                <td class="report_approval"> <p><a href="<c:url value='/approvals/show?id=${report.id}' />">承認済み</a></p></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td class="report_approval"><p><a href="<c:url value='/approvals/show?id=${report.id}' />">未承認</a></p></td>
+                            </c:otherwise>
+                        </c:choose>
                     </tr>
                 </c:forEach>
             </tbody>
