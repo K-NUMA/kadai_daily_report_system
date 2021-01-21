@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Approval;
 import models.Employee;
 import models.Report;
+import models.validators.ApprovalValidator;
 import utils.DBUtil;
 
 /**
@@ -39,30 +41,38 @@ public class ApprovalsCreateServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             int report_id = Integer.parseInt(request.getParameter("report_id"));
-            Report r = em.find(Report.class,report_id);
-            Employee e = (Employee)request.getSession().getAttribute("login_employee");
-
+            Report r;
             Approval a = new Approval();
 
-            a.setId(report_id);
-            a.setEmployee(r.getEmployee());
-            a.setApproval_employee(e.getId());
-            a.setReport_date(r.getReport_date());
-            a.setReport_title(r.getTitle());
-            a.setReport_content(r.getContent());
+            if((ApprovalValidator.validate(a,report_id))){
+                request.setAttribute("app_flush", "既に承認済みの日報です。");
 
-            Timestamp currentTime =  new Timestamp(System.currentTimeMillis());
-            a.setApproval_date(currentTime);
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/approvals/new.jsp");
+                rd.forward(request, response);
+            }else{
+                r = em.find(Report.class,report_id);
+                Employee e = (Employee)request.getSession().getAttribute("login_employee");
 
-            //MySQLへコミットする
-            em.getTransaction().begin();
-            em.persist(a);
-            em.getTransaction().commit();
-            em.close();
+                a.setId(report_id);
+                a.setEmployee(r.getEmployee());
+                a.setApproval_employee(e.getId());
+                a.setReport_date(r.getReport_date());
+                a.setReport_title(r.getTitle());
+                a.setReport_content(r.getContent());
 
-            request.getSession().setAttribute("flush", "承認が完了しました。");
+                Timestamp currentTime =  new Timestamp(System.currentTimeMillis());
+                a.setApproval_date(currentTime);
 
-            response.sendRedirect(request.getContextPath() + "/reports/index");
+                //MySQLへコミットする
+                em.getTransaction().begin();
+                em.persist(a);
+                em.getTransaction().commit();
+                em.close();
+
+                request.getSession().setAttribute("flush", "承認が完了しました。");
+
+                response.sendRedirect(request.getContextPath() + "/reports/index");
+            }
         }
     }
 

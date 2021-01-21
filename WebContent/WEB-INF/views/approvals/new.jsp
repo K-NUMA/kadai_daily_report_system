@@ -4,6 +4,11 @@
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
         <c:choose>
+            <c:when test="${app_flush != null }">
+                <div id="flush_error">
+                    <h2><c:out value="${app_flush}" /></h2>
+                </div>
+            </c:when>
             <c:when test="${report != null }">
                 <h2>日報 承認画面</h2>
 
