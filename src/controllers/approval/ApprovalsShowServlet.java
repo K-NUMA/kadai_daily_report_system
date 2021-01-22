@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Approval;
+import models.Employee;
 import models.Report;
 import utils.DBUtil;
 
@@ -39,9 +40,11 @@ public class ApprovalsShowServlet extends HttpServlet {
 
         Approval ap = em.find(Approval.class,report_id);
         Report r = em.find(Report.class,report_id);
+        Employee e = (Employee)request.getSession().getAttribute("login_employee");
 
         request.setAttribute("report",r);
         request.setAttribute("approval",ap);
+        request.setAttribute("app_employee",e);
 
         em.close();
 

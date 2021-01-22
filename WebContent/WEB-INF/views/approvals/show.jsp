@@ -43,7 +43,9 @@
             </c:when>
             <c:otherwise>
                 <h2>この日報はまだ承認していません。</h2>
-                <p><a href="<c:url value='/approvals/new?report_id=${report.id}' />">日報の承認へ進む</a></p>
+                    <c:if test="${app_employee.admin_flag == 2}">
+                        <p><a href="<c:url value='/approvals/new?report_id=${report.id}' />">日報の承認へ進む</a></p>
+                    </c:if>
             </c:otherwise>
         </c:choose>
 
