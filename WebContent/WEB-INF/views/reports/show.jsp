@@ -35,8 +35,56 @@
                 </table>
 
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
-                    <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
+                    <p id="edit"><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
                 </c:if>
+
+                <c:choose>
+                    <c:when test="${evaluation == null}">
+                        <form method="POST" action="<c:url value='/evaluations/create' />" id="eval">
+                            <input type="hidden" name="gb" value="1" />
+                            <input type="hidden" name="id" value="${report.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit">高評価する</button>
+                        </form>
+                        <form method="POST" action="<c:url value='/evaluations/create' />" id="eval">
+                            <input type="hidden" name="gb" value="0" />
+                            <input type="hidden" name="id" value="${report.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit">低評価する</button>
+                        </form>
+                    </c:when>
+                    <c:when test="${evaluation.good_report == 1}">
+                        <form method="POST" action="<c:url value='/evaluations/delete' />" id="eval">
+                            <input type="hidden" name="report_id" value="${report.id}" />
+                            <input type="hidden" name="eval_id" value="${evaluation.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit" id="evaluated">高評価済み</button>
+                        </form>
+                        <form method="POST" action="<c:url value='/evaluations/update' />" id="eval">
+                            <input type="hidden" name="gb" value="0" />
+                            <input type="hidden" name="id" value="${evaluation.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit">低評価する</button>
+                        </form>
+                    </c:when>
+                    <c:otherwise>
+                        <form method="POST" action="<c:url value='/evaluations/update' />" id="eval">
+                            <input type="hidden" name="gb" value="1" />
+                            <input type="hidden" name="id" value="${evaluation.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit">高評価する</button>
+                        </form>
+                        <form method="POST" action="<c:url value='/evaluations/delete' />" id="eval">
+                            <input type="hidden" name="report_id" value="${report.id}" />
+                            <input type="hidden" name="eval_id" value="${evaluation.id}" />
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <button type="submit" id="evaluated">低評価済み</button>
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+
+                <div id="eval" class="count">高評価 <c:out value="${good_count}" />件</div>
+                <div id="eval" class="count">低評価 <c:out value="${bad_count}" />件</div>
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>

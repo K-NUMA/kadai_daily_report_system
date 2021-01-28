@@ -173,3 +173,22 @@ h3{
     display : inline-block;
     margin:20px;
 }
+
+#edit{
+    display : inline-block;
+    margin:10px;
+}
+
+#eval{
+    display : inline-block;
+    margin:10px;
+}
+
+.count{
+    border: 1px solid #cccccc;
+    padding: 5px;
+}
+
+#evaluated{
+    background-color:#ff6666;
+}
